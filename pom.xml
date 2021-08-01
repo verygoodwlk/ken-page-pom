@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <groupId>io.github.verygoodwlk</groupId>
+    <artifactId>ken-page-pom</artifactId>
+    <version>1.0</version>
+    <modules>
+        <module>ken-page-mybatis-plugin</module>
+        <module>ken-page-mybatis-commons</module>
+        <module>ken-page-mybatis-web</module>
+        <module>ken-page-boot-starter</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <spring-boot-dependencies.version>2.3.0.RELEASE</spring-boot-dependencies.version>
+        <spring-cloud-dependencies.version>Hoxton.SR9</spring-cloud-dependencies.version>
+        <spring-cloud-alibaba-dependencies.version>2.2.6.RELEASE</spring-cloud-alibaba-dependencies.version>
+
+        <mybatis-spring.version>2.0.5</mybatis-spring.version>
+        <mybatis.version>3.5.5</mybatis.version>
+        <basic.version>1.0</basic.version>
+        <servlet.version>2.5</servlet.version>
+    </properties>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+   <!-- <scm>
+        <url>https://github.com/verygoodwlk/OSSRH-71716</url>
+        <connection>https://github.com/verygoodwlk/OSSRH-71716.git</connection>
+    </scm>-->
+    <!--开源地址-->
+    <scm>
+        <connection>scm:git:git@github.com:verygoodwlk/OSSRH-71716.git</connection>
+        <developerConnection>scm:git:git@github.com:verygoodwlk/OSSRH-71716.git</developerConnection>
+        <url>git@github.com:verygoodwlk/OSSRH-71716.git</url>
+    </scm>
+
+    <!--  Issue地址  -->
+    <issueManagement>
+        <system>Github Issue</system>
+        <url>https://github.com/verygoodwlk/OSSRH-71716/issues</url>
+    </issueManagement>
+
+    <!-- 开发者信息 -->
+    <developers>
+        <developer>
+            <name>ken</name>
+            <id>ken</id>
+            <email>1120673996@qq.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- SpringBoot 依赖 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--SpringCloud Alibaba依赖-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- SpringCloud Netflix依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--springcloud springboot spring cloud end-->
+
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis-spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.verygoodwlk</groupId>
+                <artifactId>ken-page-mybatis-commons</artifactId>
+                <version>${basic.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.verygoodwlk</groupId>
+                <artifactId>ken-page-mybatis-plugin</artifactId>
+                <version>${basic.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.verygoodwlk</groupId>
+                <artifactId>ken-page-mybatis-web</artifactId>
+                <version>${basic.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servlet.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <build>
+        <plugins>
+            <!--JDK版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+            <!-- springboot-maven的整合插件 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
