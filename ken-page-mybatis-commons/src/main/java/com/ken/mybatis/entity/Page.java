@@ -33,6 +33,13 @@ public class Page<T> implements Serializable {
      */
     private Integer totle;
 
+    public Page() {
+    }
+
+    public Page(Integer pageNum, Integer pageSize) {
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
+    }
 
     public Page setCount(Integer count) {
         this.count = count;

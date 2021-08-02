@@ -4,9 +4,7 @@ import com.ken.mybatis.aop.PageAop;
 import com.ken.mybatis.plugin.PagePlugin;
 import com.ken.mybatis.plugin.SQLExecPlugin;
 import com.ken.mybatis.web.aop.WebPageAop;
-import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -24,8 +22,8 @@ public class MyBatisPageConfig {
     //有mybatis的环境
     @ConditionalOnClass(SqlSessionFactory.class)
     //指定属性值为true时才能加载
-    @ConditionalOnProperty(prefix = "kenplugin.execsql.enable", havingValue = "true", matchIfMissing = true)
-    public Interceptor getExecSqlPlugin(){
+    @ConditionalOnProperty(prefix = "kenplugin.execsql", value = "enable", havingValue = "true", matchIfMissing = true)
+    public SQLExecPlugin getExecSqlPlugin(){
         return new SQLExecPlugin();
     }
 
@@ -36,8 +34,8 @@ public class MyBatisPageConfig {
     //有mybatis的环境
     @ConditionalOnClass(SqlSessionFactory.class)
     //指定属性值为true时才能加载
-    @ConditionalOnProperty(prefix = "kenplugin.page.enable", havingValue = "true", matchIfMissing = true)
-    public Interceptor getPagePlugin(){
+    @ConditionalOnProperty(prefix = "kenplugin.page", value = "enable", havingValue = "true", matchIfMissing = true)
+    public PagePlugin getPagePlugin(){
         return new PagePlugin();
     }
 
@@ -46,9 +44,9 @@ public class MyBatisPageConfig {
      */
     @Bean
     //存在aop环境
-    @ConditionalOnBean(Aspect.class)
+//    @ConditionalOnBean(Aspect.class)
     //指定属性值为true时才能加载
-    @ConditionalOnProperty(prefix = "kenplugin.page.enable", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "kenplugin.page", value = "enable", havingValue = "true", matchIfMissing = true)
     public PageAop getPageAop(){
         return new PageAop();
     }
@@ -59,11 +57,11 @@ public class MyBatisPageConfig {
     @Bean
     //存在aop环境
     //当存在分页插件时，才会加载该AOP
-    @ConditionalOnBean(value = {Aspect.class,PagePlugin.class})
+    @ConditionalOnBean(PagePlugin.class)
     //web环境才能加载
     @ConditionalOnWebApplication
     //指定属性值为true时才能加载，缺省不加载
-    @ConditionalOnProperty(prefix = "kenplugin.page.webconfig.enable", havingValue = "true", matchIfMissing = false)
+    @ConditionalOnProperty(prefix = "kenplugin.page.webconfig", value = "enable", havingValue = "true", matchIfMissing = false)
     public WebPageAop getWebPageAop(){
         return new WebPageAop();
     }

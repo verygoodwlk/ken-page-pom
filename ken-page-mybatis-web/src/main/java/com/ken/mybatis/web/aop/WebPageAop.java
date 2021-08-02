@@ -19,16 +19,17 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 public class WebPageAop {
 
-    @Value("${page.num.key:pageNum}")
+    @Value("${kenplugin.page.key.num:pageNum}")
     private String pNum;
-    @Value("${page.size.key:pageSize}")
+    @Value("${kenplugin.page.key.size:pageSize}")
     private String pSize;
 
     /**
      * 被@Paging注解标记的方法，会被AOP拦截
      * @return
      */
-    @Around("@annotation(org.springframework.web.bind.annotation.RestController) || @annotation(org.springframework.stereotype.Controller)")
+//    @Around("@annotation(org.springframework.web.bind.annotation.RestController)")
+    @Around("@within(org.springframework.web.bind.annotation.RestController) || @within(org.springframework.stereotype.Controller)")
     public Object pageHandler(ProceedingJoinPoint joinPoint) throws Throwable {
         //获得请求对象
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
