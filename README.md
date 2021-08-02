@@ -156,6 +156,20 @@ http://server.com/xxxx?pageNum=1&pageSize=5
 > 
 >业务复杂的情况下，仍然可以使用@Paging注解实现定制化分页
 
+定制分页参数名称
+
+> 当不想使用pageNum和pageSize作为参数名称时，可以定制名称
+
+```yml
+kenplugin:
+ page:
+  key:
+   #定制当前页的参数名称
+   num: pageNo
+   #定制每页条数的参数名称
+   size: pageS
+```
+
 返回分页信息给客户端
 
 > Web层（Controller方法）返回的对象必须继承BaseResult类，比如
