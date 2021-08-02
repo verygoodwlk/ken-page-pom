@@ -47,16 +47,16 @@
     </scm>-->
     <!--开源地址-->
     <scm>
-        <connection>scm:git:git@github.com:verygoodwlk/OSSRH-71716.git</connection>
-        <developerConnection>scm:git:git@github.com:verygoodwlk/OSSRH-71716.git</developerConnection>
-        <url>git@github.com:verygoodwlk/OSSRH-71716.git</url>
+        <connection>scm:git:git@github.com:verygoodwlk/ken-page-pom.git</connection>
+        <developerConnection>scm:git:git@github.com:verygoodwlk/ken-page-pom.git</developerConnection>
+        <url>git@github.com:verygoodwlk/ken-page-pom.git</url>
     </scm>
 
     <!--  Issue地址  -->
-    <issueManagement>
+   <!-- <issueManagement>
         <system>Github Issue</system>
-        <url>https://github.com/verygoodwlk/OSSRH-71716/issues</url>
-    </issueManagement>
+        <url>https://github.com/verygoodwlk/ken-page-pom/issues</url>
+    </issueManagement>-->
 
     <!-- 开发者信息 -->
     <developers>
