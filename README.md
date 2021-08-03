@@ -122,7 +122,7 @@ select * from
 
 ```sql
 select * from
-  (@{select * from table1 limit ?}) t join table2 t2 on t.id = t2.tid 
+  (@{select * from table1}) t join table2 t2 on t.id = t2.tid 
 ```
 > table1作为主表，我们可以人为将主表的查询部分独立出来，然后在主表查询前后加上@{}，
 > 插件会自动判别到该部分为主表查询，会先对该部分分页，再将分页出来的结果去关联其他表，
