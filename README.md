@@ -31,8 +31,8 @@ kenplugin:
 
 ```xml
 <dependency> 
-   <groupId>com.ken</groupId>
-   <artifactId>live-data-entity-base</artifactId>
+   <groupId>io.github.verygoodwlk</groupId>
+   <artifactId>ken-page-boot-starter</artifactId>
    <version>1.1</version>
 </dependency>
 ```
