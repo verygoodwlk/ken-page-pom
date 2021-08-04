@@ -1,6 +1,6 @@
 package com.ken.mybatis.web.aop;
 
-import com.ken.mybatis.entity.Page;
+import com.ken.mybatis.protocol.BasePage;
 import com.ken.mybatis.protocol.BaseResult;
 import com.ken.mybatis.utils.KenPages;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -38,15 +38,11 @@ public class WebPageAop {
         String pageSize = request.getParameter(pSize);
 
         //封装Page对象
-        Page page = null;
+        BasePage page = null;
         if (pageNum != null && pageSize != null) {
-            page = new Page();
-            page.setPageNum(Integer.valueOf(pageNum));
-            page.setPageSize(Integer.valueOf(pageSize));
             //缓存到ThreadLocal中
-            KenPages.setPage(page);
+            KenPages.setPage(Integer.valueOf(pageNum), Integer.valueOf(pageSize));
         }
-
 
         //放行请求
         Object result = null;
@@ -62,7 +58,7 @@ public class WebPageAop {
                     ((BaseResult)result).setPage(page);
                 }
                 //业务执行 清空分页缓存
-                KenPages.setPage(null);
+                KenPages.clearPage();
             }
         } catch (Throwable throwable) {
             //异常不处理，继续上抛

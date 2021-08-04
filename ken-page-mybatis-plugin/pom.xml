@@ -31,6 +31,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>io.github.verygoodwlk</groupId>
             <artifactId>ken-page-mybatis-commons</artifactId>
         </dependency>

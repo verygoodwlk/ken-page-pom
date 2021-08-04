@@ -1,6 +1,6 @@
 package com.ken.mybatis.plugin;
 
-import com.ken.mybatis.entity.Page;
+import com.ken.mybatis.protocol.BasePage;
 import com.ken.mybatis.utils.KenPages;
 import com.ken.mybatis.utils.MyBatisUtils;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
@@ -59,19 +59,25 @@ public class PagePlugin implements Interceptor {
         //判断该sql是否为查询语句
         if(!sql.startsWith("select")){
             //不是查询语句，无需分页
+            //回设最新的SQL语句
+            reSetSQL(pageSql, sql, statmentObject);
             return invocation.proceed();
         }
 
         //判断该sql语句时候包含limit
         if(sql.indexOf("limit") != -1){
             //自带分页，无需插件分页
+            //回设最新的SQL语句
+            reSetSQL(pageSql, sql, statmentObject);
             return invocation.proceed();
         }
 
         //获取分页的Page对象并且是开启了分页的，否则无法分页
-        Page page = KenPages.getPage();
+        BasePage page = KenPages.getPage();
         if (page == null || !page.isEnable()) {
             //找不到分页对象，无法分页
+            //回设最新的SQL语句
+            reSetSQL(pageSql, sql, statmentObject);
             return invocation.proceed();
         }
         log.info("[PAGING SQL] paging begin...");
@@ -80,6 +86,11 @@ public class PagePlugin implements Interceptor {
         //调用封装的方法，获取当前查询的总条数
         int count = getTotal(invocation, statmentObject, sql);
         page.setCount(count);
+        //设置总页码
+        if (page.getPageSize() == null) page.setPageSize(10);//如果没有每页显示的条数，默认设置为10条
+        page.setTotal(page.getCount() % page.getPageSize() == 0 ?
+                page.getCount() / page.getPageSize() :
+                page.getCount() % page.getPageSize() + 1);
 
         //开始分页
         //去除最后的分号
@@ -87,18 +98,10 @@ public class PagePlugin implements Interceptor {
             sql = sql.substring(0, sql.length() - 1);
         }
         //拼接limit关键字
-        sql += " limit " +  (page.getPageNum() - 1) * page.getPageSize() + "," + page.getPageSize();
+        sql += " limit " +  ((page.getPageNum() - 1) * page.getPageSize()) + "," + page.getPageSize();
 
-        //如果原sql中包含@{}字符，需要用调整后的sql替换掉
-        if(beginIndex != -1 && endIndex != -1) {
-            pageSql = pageSql.replaceAll("@\\{(.|\\n|\\r|\\s)*\\}", sql);
-        } else {
-            pageSql = sql;
-        }
-
-        //回设sql语句
-        log.info("[PAGING SQL] paging sql update - " + pageSql);
-        statmentObject.setValue("delegate.boundSql.sql", pageSql);
+        //回设最新的SQL语句
+        reSetSQL(pageSql, sql, statmentObject);
 
         //放行，进行sql编译
         PreparedStatement ps = (PreparedStatement) invocation.proceed();
@@ -109,6 +112,25 @@ public class PagePlugin implements Interceptor {
         log.info("[PAGING SQL] paging end...");
         //返回statement对象交给MyBatis进行后续的sql执行操作
         return ps;
+    }
+
+    /**
+     * 回设SQL语句
+     */
+    private void reSetSQL(String oldSql, String sql, MetaObject statmentObject){
+        int beginIndex = oldSql.indexOf("@{");
+        int endIndex = oldSql.indexOf("}");
+
+        //如果原sql中包含@{}字符，需要用调整后的sql替换掉
+        if(beginIndex != -1 && endIndex != -1) {
+            oldSql = oldSql.replaceAll("@\\{(.|\\n|\\r|\\s)*\\}", sql);
+        } else {
+            oldSql = sql;
+        }
+
+        //回设sql语句
+        log.info("[PAGING SQL] paging sql update - " + oldSql);
+        statmentObject.setValue("delegate.boundSql.sql", oldSql);
     }
 
     /**

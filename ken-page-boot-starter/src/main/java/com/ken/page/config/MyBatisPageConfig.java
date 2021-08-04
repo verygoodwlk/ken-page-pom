@@ -1,8 +1,12 @@
 package com.ken.page.config;
 
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
+import com.ken.mybatis.aop.AutoMappingAop;
 import com.ken.mybatis.aop.PageAop;
 import com.ken.mybatis.plugin.PagePlugin;
+import com.ken.mybatis.plugin.ResuletAutoPlugin;
 import com.ken.mybatis.plugin.SQLExecPlugin;
+import com.ken.mybatis.utils.SpringContextHolder;
 import com.ken.mybatis.web.aop.WebPageAop;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -14,6 +18,11 @@ import org.springframework.context.annotation.Bean;
 
 @Configurable
 public class MyBatisPageConfig {
+
+    @Bean
+    public SpringContextHolder getSpringContextHolder(){
+        return new SpringContextHolder();
+    }
 
     /**
      * 装配Mybatis SQL执行记录插件
@@ -37,6 +46,29 @@ public class MyBatisPageConfig {
     @ConditionalOnProperty(prefix = "kenplugin.page", value = "enable", havingValue = "true", matchIfMissing = true)
     public PagePlugin getPagePlugin(){
         return new PagePlugin();
+    }
+
+    /**
+     * 装配Mybatis 结果集自动映射插件
+     * @return
+     */
+    @Bean
+    //有Mybatis 和 MybatisPlus的环境才能使用
+    @ConditionalOnBean({SqlSessionFactory.class, MybatisPlusAutoConfiguration.class})
+    //指定属性值为true时才能加载,缺省时不加载
+    @ConditionalOnProperty(prefix = "kenplugin.auto.mapping", value = "enable", havingValue = "true", matchIfMissing = false)
+    public ResuletAutoPlugin getAutoPlugin(){
+        return new ResuletAutoPlugin();
+    }
+
+    /**
+     * 自动映射的AOP
+     */
+    @Bean
+    //有插件时才会加载
+    @ConditionalOnBean(ResuletAutoPlugin.class)
+    public AutoMappingAop getAutoMappingAop(){
+        return new AutoMappingAop();
     }
 
     /**

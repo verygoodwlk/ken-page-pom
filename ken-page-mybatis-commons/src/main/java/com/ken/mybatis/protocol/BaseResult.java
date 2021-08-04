@@ -1,7 +1,6 @@
 package com.ken.mybatis.protocol;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ken.mybatis.entity.Page;
 
 import java.io.Serializable;
 
@@ -15,7 +14,7 @@ public class BaseResult<T> implements Serializable {
     /**
      * 分页对象
      */
-    private Page<T> page;
+    private BasePage<T> page;
 
     /**
      * 无参构造方法
@@ -23,11 +22,11 @@ public class BaseResult<T> implements Serializable {
     public BaseResult() {
     }
 
-    public Page<T> getPage() {
+    public BasePage<T> getPage() {
         return page;
     }
 
-    public void setPage(Page<T> page) {
+    public void setPage(BasePage<T> page) {
         this.page = page;
     }
 }

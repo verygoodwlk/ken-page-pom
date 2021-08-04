@@ -1,18 +1,14 @@
 package com.ken.mybatis.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ken.mybatis.protocol.BasePage;
+
 import java.io.Serializable;
 
 /**
  * 分页对象
  */
-public class Page<T> implements Serializable {
+public class Page<T> extends BasePage<T> implements Serializable {
 
-    /**
-     * 分页默认关闭
-     */
-    @JsonIgnore
-    private boolean enable = false;
     /**
      * 当前页码
      */
@@ -31,7 +27,7 @@ public class Page<T> implements Serializable {
     /**
      * 总页数
      */
-    private Integer totle;
+    private Integer total;
 
     public Page() {
     }
@@ -41,19 +37,10 @@ public class Page<T> implements Serializable {
         this.pageSize = pageSize;
     }
 
-    public Page setCount(Integer count) {
+    public void setCount(Integer count) {
         this.count = count;
         if (count != null && pageSize != null)
-            this.totle = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
-        return this;
-    }
-
-    public boolean isEnable() {
-        return enable;
-    }
-
-    public void setEnable(boolean enable) {
-        this.enable = enable;
+            this.total = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
     }
 
     public Integer getPageNum() {
@@ -76,11 +63,11 @@ public class Page<T> implements Serializable {
         return count;
     }
 
-    public Integer getTotle() {
-        return totle;
+    public Integer getTotal() {
+        return total;
     }
 
-    public void setTotle(Integer totle) {
-        this.totle = totle;
+    public void setTotal(Integer total) {
+        this.total = total;
     }
 }
