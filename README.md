@@ -236,7 +236,7 @@ kenplugin:
 编写Mapper.xml中的SQL语句
 
 ```xml
-#这里直接使用resultType标签，指定接收的实体类类型
+<!-- 这里直接使用resultType标签，指定接收的实体类类型 -->
 <select id="queryAll"  resultType="com.ken.entity.demo.Test">
         select t.*, t2.id as lid, t2.likes, t2.like_time
             <!-- 1对多关联查询 --> 
@@ -246,37 +246,37 @@ kenplugin:
 配置实体类 
 
 ```java
-#采用lombok简化开发，可以无视
+//采用lombok简化开发，可以无视
 @Data
 @Accessors(chain = true)
 public class Test implements Serializable {
 
-    #使用mybatis-plus标签标识主键，如果数据库主键名称和当前字段名称不相同，可以通过value属性设置
+    //使用mybatis-plus标签标识主键，如果数据库主键名称和当前字段名称不相同，可以通过value属性设置
     @TableId(type = IdType.AUTO)
     private Integer id;
 
-    #未标识的字段，默认和数据库同名列映射    
+    //未标识的字段，默认和数据库同名列映射    
     private Integer age;
 
-    #如果数据库字段名称和当前字段名称不相同，可以通过@TableField注解value属性设置    
-    #还可以通过该注解设置该列的typeHandler等属性
+    //如果数据库字段名称和当前字段名称不相同，可以通过@TableField注解value属性设置    
+    //还可以通过该注解设置该列的typeHandler等属性
     @TableField("p_name")
     private String name;
    
-    #防止插入报错，告诉Mybatis-plus忽略该字段
+    //防止插入报错，告诉Mybatis-plus忽略该字段
     @TableField(exist = false)
-    #标识对多映射，指定对多的集合体中实际的类型
-    #如果是对一映射，可以使用@ToOne注解即可
+    //标识对多映射，指定对多的集合体中实际的类型
+    //如果是对一映射，可以使用@ToOne注解即可
     @ToMore(type = Test2.class)
     private List<Test2> likes;
 }
 
-#关联的实体类 多的一方
+//关联的实体类 多的一方
 @Data
 @Accessors(chain = true)
 public class Test2 implements Serializable {
     
-    #需要注意，如果两个表的主键同名，需要设置一个别名id和数据库的主键映射，SQL语句中也必须指定id别名
+    //需要注意，如果两个表的主键同名，需要设置一个别名id和数据库的主键映射，SQL语句中也必须指定id别名
     @TableId(value = "lid", type = IdType.AUTO)
     private Integer id;
 
@@ -291,7 +291,7 @@ public class Test2 implements Serializable {
 添加查询注解
 
 ```java
-#标注@AutoMapping的方法，才会启动自动映射的功能，起到一个局部控制的作用
+//标注@AutoMapping的方法，才会启动自动映射的功能，起到一个局部控制的作用
 @AutoMapping
 List<Test> queryAll();
 ```
