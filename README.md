@@ -6,26 +6,8 @@
 > 3、解决复杂关联查询导致分页错误的问题
 > 4、配合Web层拦截，实现无侵入式分页
 
-### 二、SQL执行监控功能
 
-> 插件自带SQL执行记录以及耗时监控功能，所有运行的sql语句以及相关参数还有耗时时间都将被日志记录
-
-```
-[SQL] executor - [select * from test where id = ?]
-[SQL] params[0] - [id:5]
-[SQL] take up time - [0.013s]
-```
-
-关闭SQL执行监控，只需要在application.yml配置即可
-
-```yml
-#关闭SQL记录，默认开启
-kenplugin:
- execsql:
-  enable: false
-```
-
-### 三、分页基本使用
+### 二、分页基本使用
 
 添加依赖
 
@@ -33,7 +15,7 @@ kenplugin:
 <dependency> 
    <groupId>io.github.verygoodwlk</groupId>
    <artifactId>ken-page-boot-starter</artifactId>
-   <version>1.1</version>
+   <version>1.2</version>
 </dependency>
 ```
 
@@ -43,7 +25,7 @@ kenplugin:
 //pageNum - 当前页码
 //pageSize - 每页显示多少条
 //注意：这行代码后，当前业务的所有数据库查询操作都将自动实现分页效果
-KenPages.setPage(new Page(pageNum, pageSize));
+KenPages.setPage(pageNum, pageSize);
 ```
 
 查询后获取分页信息(总条数、总页码等数据)
@@ -63,6 +45,25 @@ kenplugin:
   enable: false
 ```
 
+### 三、SQL执行监控功能
+
+> 插件自带SQL执行记录以及耗时监控功能，所有运行的sql语句以及相关参数还有耗时时间都将被日志记录
+
+```
+[SQL] executor - [select * from test where id = ?]
+[SQL] params[0] - [id:5]
+[SQL] take up time - [0.013s]
+```
+
+关闭SQL执行监控，只需要在application.yml配置即可
+
+```yml
+#关闭SQL记录，默认开启
+kenplugin:
+ execsql:
+  enable: false
+```
+
 
 ### 四、复杂业务定制化分页
 
@@ -72,7 +73,7 @@ kenplugin:
 
 ```java
 //参数二：表示开启定制化分页，默认关闭
-KenPages.setPage(new Page(pageNum, pageSize), true);
+KenPages.setPage(pageNum, pageSize, true);
 ```
 
 标记分页注解 - 通常在子业务方法或者mapper接口方法上标记
@@ -80,7 +81,7 @@ KenPages.setPage(new Page(pageNum, pageSize), true);
 ```java
 主业务方法(){
    //开启分页
-   KenPages.setPage(new Page(pageNum, pageSize), true);
+   KenPages.setPage(pageNum, pageSize, true);
    //子业务1方法
    //子业务2方法
    //子业务3方法
@@ -168,6 +169,10 @@ kenplugin:
    num: pageNo
    #定制每页条数的参数名称
    size: pageS
+   #定制返回的总条数参数名称
+   count: pageCount
+   #定制返回的总页码数参数名称
+   total: pageTotal 
 ```
 
 返回分页信息给客户端
@@ -189,12 +194,12 @@ public OutPut<List<A>> xxxx(){
 
 ```json
 {
-    //分页信息
+    //分页信息 - 属性名称通过上面的参数可自定义（不设置则采用默认参数名称）
     "page": {
-        "pageNum": 1,
-        "pageSize": 2,
-        "count": 25,
-        "totle": 13
+        "pageNo": 1,
+        "pageS": 2,
+        "pageCount": 25,
+        "pageTotal": 13
     },
     "code": 200,
     "message": "请求成功",
@@ -204,4 +209,120 @@ public OutPut<List<A>> xxxx(){
         }
     ]
 }
+```
+
+### 七、复杂查询的自动映射功能 - （测试中）
+
+> 实际开发过程中，可能会面临很多关联查询，这些查询结果需要映射到实体类集合中，为了实现嵌套映射，往往开发者需要编写大量的 ResultMap 标签内容来手动构建查询结果和实体类的映射关系。
+> 自动映射功能并不是原来单纯的单表映射，而是可以借助注解轻松实现多表关联查询的自动映射。
+
+> 注意：
+> 1、该功能目前处于测试阶段，如果有任何问题可以直接关闭或者局部关闭，不影响原来正常功能的使用
+> 2、该功能目前需要配合Mybatis-plus插件一起使用，原生或其他框架暂时不支持
+> 3、该功能对Mybatis底层侵入较深，会影响一定的性能，请慎用，后续版本会进行性能优化
+
+> 使用步骤
+
+开启自动映射功能
+
+```yml
+#开启自动映射功能（默认关闭）
+kenplugin:
+  auto:
+    mapping:
+      enable: true
+```
+
+编写Mapper.xml中的SQL语句
+
+```xml
+#这里直接使用resultType标签，指定接收的实体类类型
+<select id="queryAll"  resultType="com.ken.entity.demo.Test">
+        select t.*, t2.id as lid, t2.likes, t2.like_time
+            <!-- 1对多关联查询 --> 
+            from test t join test2 t2 on t.id = t2.uid
+</select>
+```
+配置实体类 
+
+```java
+#采用lombok简化开发，可以无视
+@Data
+@Accessors(chain = true)
+public class Test implements Serializable {
+
+    #使用mybatis-plus标签标识主键，如果数据库主键名称和当前字段名称不相同，可以通过value属性设置
+    @TableId(type = IdType.AUTO)
+    private Integer id;
+
+    #未标识的字段，默认和数据库同名列映射    
+    private Integer age;
+
+    #如果数据库字段名称和当前字段名称不相同，可以通过@TableField注解value属性设置    
+    #还可以通过该注解设置该列的typeHandler等属性
+    @TableField("p_name")
+    private String name;
+   
+    #防止插入报错，告诉Mybatis-plus忽略该字段
+    @TableField(exist = false)
+    #标识对多映射，指定对多的集合体中实际的类型
+    #如果是对一映射，可以使用@ToOne注解即可
+    @ToMore(type = Test2.class)
+    private List<Test2> likes;
+}
+
+#关联的实体类 多的一方
+@Data
+@Accessors(chain = true)
+public class Test2 implements Serializable {
+    
+    #需要注意，如果两个表的主键同名，需要设置一个别名id和数据库的主键映射，SQL语句中也必须指定id别名
+    @TableId(value = "lid", type = IdType.AUTO)
+    private Integer id;
+
+    private Integer uid;
+
+    private String likes;
+
+    private Date likeTime;
+}
+```
+
+添加查询注解
+
+```java
+#标注@AutoMapping的方法，才会启动自动映射的功能，起到一个局部控制的作用
+@AutoMapping
+List<Test> queryAll();
+```
+
+执行查询查看结果
+
+```json
+
+...
+"data": [
+        {
+            "id": 1,
+            "name": "小明",
+            "age": 18,
+            "likes": [
+               {
+                  "id": 5,
+                  "uid": 1,
+                  "likes": "篮球",
+                  "likeTime": "2007-09-08"
+               },
+               {
+                  "id": 7,
+                  "uid": 1,
+                  "likes": "乒乓球",
+                  "likeTime": "2005-01-07"
+               },
+               ...
+            ]     
+        },
+        ...
+    ]
+...
 ```
