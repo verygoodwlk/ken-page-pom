@@ -5,21 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * 抽象分页的父类
  */
+@Deprecated
 public abstract class BasePage<T> {
-
-    /**
-     * 分页默认关闭
-     */
-    @JsonIgnore
-    private boolean enable = false;
-
-    public boolean isEnable() {
-        return enable;
-    }
-
-    public void setEnable(boolean enable) {
-        this.enable = enable;
-    }
 
     /**
      * 几个抽象的设置方法
@@ -30,8 +17,12 @@ public abstract class BasePage<T> {
     public abstract void setCount(Integer count);
     public abstract void setTotal(Integer total);
 
+    @JsonIgnore
     public abstract Integer getPageNum();
+    @JsonIgnore
     public abstract Integer getPageSize();
+    @JsonIgnore
     public abstract Integer getCount();
+    @JsonIgnore
     public abstract Integer getTotal();
 }

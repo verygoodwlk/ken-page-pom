@@ -2,28 +2,24 @@ package com.ken.mybatis.utils;
 
 
 import com.ken.mybatis.entity.Page;
-import com.ken.mybatis.protocol.BasePage;
 
 /**
  * Page对象缓存的ThreadLocal工具类
  */
 public class KenPages {
 
-    private static ThreadLocal<BasePage> pageThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<Page> pageThreadLocal = new ThreadLocal<>();
     private static ThreadLocal<Boolean> autoThreadLocal = new ThreadLocal<>();
 
     /*
     分页相关的方法
      */
-    public static BasePage getPage(){
+    public static Page getPage(){
         return pageThreadLocal.get();
     }
 
     public static void setPage(Integer pageNum, Integer pageSize, boolean isBatch){
-        BasePage page = SpringContextHolder.getBean(BasePage.class);
-        if (page == null) {
-            page = new Page();
-        }
+        Page page = new Page();
         page.setPageNum(pageNum);
         page.setPageSize(pageSize);
         page.setEnable(!isBatch);

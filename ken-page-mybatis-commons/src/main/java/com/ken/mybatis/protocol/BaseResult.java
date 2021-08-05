@@ -3,6 +3,7 @@ package com.ken.mybatis.protocol;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 接口返回统一对象
@@ -14,7 +15,7 @@ public class BaseResult<T> implements Serializable {
     /**
      * 分页对象
      */
-    private BasePage<T> page;
+    private Map<String, String> page;
 
     /**
      * 无参构造方法
@@ -22,11 +23,11 @@ public class BaseResult<T> implements Serializable {
     public BaseResult() {
     }
 
-    public BasePage<T> getPage() {
+    public Map<String, String> getPage() {
         return page;
     }
 
-    public void setPage(BasePage<T> page) {
+    public void setPage(Map<String, String> page) {
         this.page = page;
     }
 }

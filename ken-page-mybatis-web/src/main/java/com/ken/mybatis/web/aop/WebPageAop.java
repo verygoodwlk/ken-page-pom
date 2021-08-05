@@ -1,6 +1,6 @@
 package com.ken.mybatis.web.aop;
 
-import com.ken.mybatis.protocol.BasePage;
+import com.ken.mybatis.entity.Page;
 import com.ken.mybatis.protocol.BaseResult;
 import com.ken.mybatis.utils.KenPages;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,6 +11,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -23,6 +25,10 @@ public class WebPageAop {
     private String pNum;
     @Value("${kenplugin.page.key.size:pageSize}")
     private String pSize;
+    @Value("${kenplugin.page.key.total:total}")
+    private String pTotal;
+    @Value("${kenplugin.page.key.count:count}")
+    private String pCount;
 
     /**
      * 被@Paging注解标记的方法，会被AOP拦截
@@ -38,7 +44,7 @@ public class WebPageAop {
         String pageSize = request.getParameter(pSize);
 
         //封装Page对象
-        BasePage page = null;
+        Page page = null;
         if (pageNum != null && pageSize != null) {
             //缓存到ThreadLocal中
             KenPages.setPage(Integer.valueOf(pageNum), Integer.valueOf(pageSize));
@@ -55,7 +61,12 @@ public class WebPageAop {
                 //如果有分页信息，则修改返回对象
                 if (result instanceof BaseResult) {
                     //将page分页设置到返回对象上
-                    ((BaseResult)result).setPage(page);
+                    Map<String, Integer> pageMap = new HashMap<>();
+                    pageMap.put(pNum, page.getPageNum());
+                    pageMap.put(pSize, page.getPageSize());
+                    pageMap.put(pTotal, page.getTotal());
+                    pageMap.put(pCount, page.getCount());
+                    ((BaseResult)result).setPage(pageMap);
                 }
                 //业务执行 清空分页缓存
                 KenPages.clearPage();

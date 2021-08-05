@@ -1,6 +1,6 @@
 package com.ken.mybatis.aop;
 
-import com.ken.mybatis.protocol.BasePage;
+import com.ken.mybatis.entity.Page;
 import com.ken.mybatis.utils.KenPages;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -20,7 +20,7 @@ public class PageAop {
     public Object pageHandler(ProceedingJoinPoint joinPoint) throws Throwable {
 
         //判断是否存在Page对象，如果不存在就直接创建
-        BasePage page = KenPages.getPage();
+        Page page = KenPages.getPage();
         if (page != null)
             //开启分页
             page.setEnable(true);

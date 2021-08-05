@@ -1,13 +1,27 @@
 package com.ken.mybatis.entity;
 
-import com.ken.mybatis.protocol.BasePage;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 
 /**
  * 分页对象
  */
-public class Page<T> extends BasePage<T> implements Serializable {
+public class Page<T> implements Serializable {
+
+    /**
+     * 分页默认关闭
+     */
+    @JsonIgnore
+    private boolean enable = false;
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
 
     /**
      * 当前页码

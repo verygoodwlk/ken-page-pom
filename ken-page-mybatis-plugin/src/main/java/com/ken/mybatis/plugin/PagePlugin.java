@@ -1,6 +1,6 @@
 package com.ken.mybatis.plugin;
 
-import com.ken.mybatis.protocol.BasePage;
+import com.ken.mybatis.entity.Page;
 import com.ken.mybatis.utils.KenPages;
 import com.ken.mybatis.utils.MyBatisUtils;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
@@ -73,7 +73,7 @@ public class PagePlugin implements Interceptor {
         }
 
         //获取分页的Page对象并且是开启了分页的，否则无法分页
-        BasePage page = KenPages.getPage();
+        Page page = KenPages.getPage();
         if (page == null || !page.isEnable()) {
             //找不到分页对象，无法分页
             //回设最新的SQL语句

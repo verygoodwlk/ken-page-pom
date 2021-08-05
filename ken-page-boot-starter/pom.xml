@@ -5,7 +5,7 @@
     <parent>
         <artifactId>ken-page-pom</artifactId>
         <groupId>io.github.verygoodwlk</groupId>
-        <version>1.1</version>
+        <version>1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -50,6 +50,12 @@
             <artifactId>mybatis</artifactId>
             <scope>provided</scope>
         </dependency>
+
+       <!-- <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>-->
     </dependencies>
 
 </project>

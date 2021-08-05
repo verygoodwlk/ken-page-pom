@@ -1,0 +1,72 @@
+{
+  "groups": [
+    {
+      "name": "kenplugin.auto.mapping",
+      "type": "com.ken.page.config.KenPageConfiguration$AutoMappingConfiguration",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$AutoMappingConfiguration"
+    },
+    {
+      "name": "kenplugin.execsql",
+      "type": "com.ken.page.config.KenPageConfiguration$ExecSqlConfiguration",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$ExecSqlConfiguration"
+    },
+    {
+      "name": "kenplugin.page",
+      "type": "com.ken.page.config.KenPageConfiguration$PageConfiguration",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$PageConfiguration"
+    },
+    {
+      "name": "kenplugin.page.key",
+      "type": "com.ken.page.config.KenPageConfiguration$WebPageParamConfiguration",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$WebPageParamConfiguration"
+    },
+    {
+      "name": "kenplugin.page.webconfig",
+      "type": "com.ken.page.config.KenPageConfiguration$WebPageConfiguration",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$WebPageConfiguration"
+    }
+  ],
+  "properties": [
+    {
+      "name": "kenplugin.auto.mapping.enable",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$AutoMappingConfiguration"
+    },
+    {
+      "name": "kenplugin.execsql.enable",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$ExecSqlConfiguration"
+    },
+    {
+      "name": "kenplugin.page.enable",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$PageConfiguration"
+    },
+    {
+      "name": "kenplugin.page.key.num",
+      "type": "java.lang.Integer",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$WebPageParamConfiguration"
+    },
+    {
+      "name": "kenplugin.page.key.size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$WebPageParamConfiguration"
+    },
+    {
+      "name": "kenplugin.page.key.total",
+      "type": "java.lang.Integer",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$WebPageParamConfiguration"
+    },
+    {
+      "name": "kenplugin.page.key.count",
+      "type": "java.lang.Integer",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$WebPageParamConfiguration"
+    },
+    {
+      "name": "kenplugin.page.webconfig.enable",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.ken.page.config.KenPageConfiguration$WebPageConfiguration"
+    }
+  ],
+  "hints": []
+}
