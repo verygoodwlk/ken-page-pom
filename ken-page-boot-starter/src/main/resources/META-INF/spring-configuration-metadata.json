@@ -44,22 +44,22 @@
     },
     {
       "name": "kenplugin.page.key.num",
-      "type": "java.lang.Integer",
+      "type": "java.lang.String",
       "sourceType": "com.ken.page.config.KenPageConfiguration$WebPageParamConfiguration"
     },
     {
       "name": "kenplugin.page.key.size",
-      "type": "java.lang.Integer",
+      "type": "java.lang.String",
       "sourceType": "com.ken.page.config.KenPageConfiguration$WebPageParamConfiguration"
     },
     {
       "name": "kenplugin.page.key.total",
-      "type": "java.lang.Integer",
+      "type": "java.lang.String",
       "sourceType": "com.ken.page.config.KenPageConfiguration$WebPageParamConfiguration"
     },
     {
       "name": "kenplugin.page.key.count",
-      "type": "java.lang.Integer",
+      "type": "java.lang.String",
       "sourceType": "com.ken.page.config.KenPageConfiguration$WebPageParamConfiguration"
     },
     {

@@ -15,7 +15,7 @@ public class BaseResult<T> implements Serializable {
     /**
      * 分页对象
      */
-    private Map<String, String> page;
+    private Map<String, Integer> page;
 
     /**
      * 无参构造方法
@@ -23,11 +23,11 @@ public class BaseResult<T> implements Serializable {
     public BaseResult() {
     }
 
-    public Map<String, String> getPage() {
+    public Map<String, Integer> getPage() {
         return page;
     }
 
-    public void setPage(Map<String, String> page) {
+    public void setPage(Map<String, Integer> page) {
         this.page = page;
     }
 }
