@@ -15,7 +15,7 @@
 <dependency> 
    <groupId>io.github.verygoodwlk</groupId>
    <artifactId>ken-page-boot-starter</artifactId>
-   <version>1.2.1</version>
+   <version>1.2.2</version>
 </dependency>
 ```
 
@@ -276,8 +276,9 @@ public class Test implements Serializable {
 @Accessors(chain = true)
 public class Test2 implements Serializable {
     
-    //需要注意，如果两个表的主键同名，需要设置一个别名id和数据库的主键映射，SQL语句中也必须指定id别名
-    @TableId(value = "lid", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
+    //需要注意，如果两个表的主键同名，需要通过@IdAlias注解设置一个别名id和数据库的主键映射，SQL语句中也必须指定id别名
+    @IdAlias("lid")
     private Integer id;
 
     private Integer uid;

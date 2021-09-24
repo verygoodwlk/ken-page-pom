@@ -2,6 +2,7 @@ package com.ken.mybatis.plugin;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.ken.mybatis.annotation.IdAlias;
 import com.ken.mybatis.annotation.ToMore;
 import com.ken.mybatis.annotation.ToOne;
 import com.ken.mybatis.utils.KenPages;
@@ -153,8 +154,13 @@ public class ResuletAutoPlugin implements Interceptor {
                 //存在当前注解，说明这是一个主键对象
                 TableId tableId = field.getAnnotation(TableId.class);
 
+                IdAlias idAlias = field.getAnnotation(IdAlias.class);
+
                 //获得数据库中的列名称
-                colume = tableId.value();
+                colume = Optional.ofNullable(idAlias)
+                        .map(idAlias1 -> idAlias1.value())
+                        .orElse(tableId.value());
+
                 //设置主键标识
                 resultFlag = ResultFlag.ID;
             }

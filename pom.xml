@@ -12,7 +12,7 @@
 
     <groupId>io.github.verygoodwlk</groupId>
     <artifactId>ken-page-pom</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <modules>
         <module>ken-page-mybatis-plugin</module>
         <module>ken-page-mybatis-commons</module>
@@ -32,7 +32,7 @@
         <mybatis-spring.version>2.0.5</mybatis-spring.version>
         <mybatis.version>3.5.5</mybatis.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
-        <basic.version>1.2.1</basic.version>
+        <basic.version>1.2.2</basic.version>
         <servlet.version>2.5</servlet.version>
     </properties>
 
