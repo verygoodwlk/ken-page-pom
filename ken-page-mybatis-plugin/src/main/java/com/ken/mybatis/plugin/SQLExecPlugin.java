@@ -68,7 +68,7 @@ public class SQLExecPlugin implements Interceptor {
         String sql = boundSql.getSql().toLowerCase().trim().replace("\n", "");
 
         //记录当前的sql语句
-        log.info("[SQL] executor - [" + sql + "]");
+        log.debug("[SQL] executor - [" + sql + "]");
 
 
         //获取所有的参数
@@ -88,7 +88,7 @@ public class SQLExecPlugin implements Interceptor {
                         MetaObject metaObject = configuration.newMetaObject(parameterObject);
                         value = metaObject.getValue(propertyName);
                     }
-                    log.info("[SQL] params[" + i + "] - [" + propertyName + ":" + value + "]");
+                    log.debug("[SQL] params[" + i + "] - [" + propertyName + ":" + value + "]");
                 }
             }
         }
@@ -100,7 +100,7 @@ public class SQLExecPlugin implements Interceptor {
         long end = System.currentTimeMillis();
         //计算耗时
         double tTime = new BigDecimal(end - beginTime).divide(new BigDecimal(1000)).setScale(6, RoundingMode.DOWN).doubleValue();
-        log.info("[SQL] take up time - [" + tTime + "s]");
+        log.debug("[SQL] take up time - [" + tTime + "s]");
 
         return result;
     }

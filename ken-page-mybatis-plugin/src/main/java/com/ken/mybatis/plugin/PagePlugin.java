@@ -80,17 +80,21 @@ public class PagePlugin implements Interceptor {
             reSetSQL(pageSql, sql, statmentObject);
             return invocation.proceed();
         }
-        log.info("[PAGING SQL] paging begin...");
-        log.info("[PAGING SQL] paging sql - [" + sql + "]");
+        log.debug("[PAGING SQL] paging begin...");
+        log.debug("[PAGING SQL] paging sql - [" + sql + "]");
 
         //调用封装的方法，获取当前查询的总条数
         int count = getTotal(invocation, statmentObject, sql);
         page.setCount(count);
         //设置总页码
-        if (page.getPageSize() == null) page.setPageSize(10);//如果没有每页显示的条数，默认设置为10条
+        if (page.getPageSize() == null || page.getPageSize() <= 0) page.setPageSize(10);//如果没有每页显示的条数，默认设置为10条
         page.setTotal(page.getCount() % page.getPageSize() == 0 ?
                 page.getCount() / page.getPageSize() :
                 page.getCount() % page.getPageSize() + 1);
+
+        //调整page的页码
+        if (page.getPageNum() <= 0) page.setPageNum(1);
+        if (page.getPageNum() > page.getTotal()) page.setPageNum(page.getTotal());
 
         //开始分页
         //去除最后的分号
@@ -101,15 +105,12 @@ public class PagePlugin implements Interceptor {
         sql += " limit " +  ((page.getPageNum() - 1) * page.getPageSize()) + "," + page.getPageSize();
 
         //回设最新的SQL语句
-        reSetSQL(pageSql, sql, statmentObject);
+        sql = reSetSQL(pageSql, sql, statmentObject);
+        log.debug("[PAGING SQL] 调整后的sql语句 - {}", sql);
 
         //放行，进行sql编译
         PreparedStatement ps = (PreparedStatement) invocation.proceed();
-//        //获得参数的总数 , 计算的是?的个数
-//        int paramsCount = ps.getParameterMetaData().getParameterCount();
-//        ps.setInt(paramsCount-1, (page.getPageNum() - 1) * page.getPageSize());
-//        ps.setInt(paramsCount, page.getPageSize());
-        log.info("[PAGING SQL] paging end...");
+        log.debug("[PAGING SQL] paging end...");
         //返回statement对象交给MyBatis进行后续的sql执行操作
         return ps;
     }
@@ -117,7 +118,7 @@ public class PagePlugin implements Interceptor {
     /**
      * 回设SQL语句
      */
-    private void reSetSQL(String oldSql, String sql, MetaObject statmentObject){
+    private String reSetSQL(String oldSql, String sql, MetaObject statmentObject){
         int beginIndex = oldSql.indexOf("@{");
         int endIndex = oldSql.indexOf("}");
 
@@ -129,8 +130,8 @@ public class PagePlugin implements Interceptor {
         }
 
         //回设sql语句
-        log.info("[PAGING SQL] paging sql update - " + oldSql);
         statmentObject.setValue("delegate.boundSql.sql", oldSql);
+        return oldSql;
     }
 
     /**
@@ -151,7 +152,7 @@ public class PagePlugin implements Interceptor {
             countsql = countsql.substring(0,  orderbyIndex);
         }
         //获得计算总数的sql
-        log.info("[PAGING SQL] paging count sql - " + countsql);
+        log.debug("[PAGING SQL] paging count sql - " + countsql);
 
         //执行该sql语句
 
