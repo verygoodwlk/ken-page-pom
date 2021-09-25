@@ -53,8 +53,6 @@ public class Page<T> implements Serializable {
 
     public void setCount(Integer count) {
         this.count = count;
-        if (count != null && pageSize != null)
-            this.total = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
     }
 
     public Integer getPageNum() {

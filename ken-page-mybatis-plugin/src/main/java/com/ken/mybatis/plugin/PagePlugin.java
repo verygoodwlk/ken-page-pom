@@ -106,7 +106,7 @@ public class PagePlugin implements Interceptor {
 
         //回设最新的SQL语句
         sql = reSetSQL(pageSql, sql, statmentObject);
-        log.debug("[PAGING SQL] 调整后的sql语句 - {}", sql);
+        log.debug("[PAGING SQL] exec sql - {}", sql);
 
         //放行，进行sql编译
         PreparedStatement ps = (PreparedStatement) invocation.proceed();
