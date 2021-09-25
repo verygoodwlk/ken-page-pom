@@ -15,7 +15,7 @@
 <dependency> 
    <groupId>io.github.verygoodwlk</groupId>
    <artifactId>ken-page-boot-starter</artifactId>
-   <version>1.2.2</version>
+   <version>1.2.3</version>
 </dependency>
 ```
 
