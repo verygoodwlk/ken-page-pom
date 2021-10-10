@@ -15,7 +15,7 @@
 <dependency> 
    <groupId>io.github.verygoodwlk</groupId>
    <artifactId>ken-page-boot-starter</artifactId>
-   <version>1.2.5</version>
+   <version>1.2.6</version>
 </dependency>
 ```
 
@@ -123,14 +123,11 @@ select * from
 
 ```sql
 select * from
-  (@{select * from table1}) t join table2 t2 on t.id = t2.tid 
+  (select * from table1 limite ?) t join table2 t2 on t.id = t2.tid 
 ```
-> table1作为主表，我们可以人为将主表的查询部分独立出来，然后在主表查询前后加上@{}，
+> table1作为主表，我们可以人为将主表的查询部分独立出来，然后在主表查询后面跟上limit ?，
 > 插件会自动判别到该部分为主表查询，会先对该部分分页，再将分页出来的结果去关联其他表，
 > 这样就会得到正确的分页结果。实际情况可能比这个复杂的多，所以需要开发者根据实际的业务去动态调整SQL语句的结构。
-
-> 注意：@{}在Mybatis的映射文件中可能会报错，那是因为@{}被MyBatis的dtd约束文件判定为不合法的字符，这里开发者无需在意，
-> 该错误并不影响SQL的执行
 
 ### 六、Web层自动化兼容分页
 
