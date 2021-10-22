@@ -162,7 +162,7 @@ public class PagePlugin implements Interceptor {
 
         //拼接sql - 获得计算总数的sql语句
         //select count(1) from student where age = ? and sex = ?
-        int formIndex = sql.indexOf("from");
+        int formIndex = MyBatisUtils.selectFromIndex(0, sql);
         String countsql = "select count(1) as total " + sql.substring(formIndex);
         //去除order by - 提升查询条数的性能
         int orderbyIndex = -1;
