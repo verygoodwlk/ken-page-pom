@@ -121,8 +121,12 @@ public class PagePlugin implements Interceptor {
                 page.getCount() / page.getPageSize() + 1);
 
         //调整page的页码
-        if (page.getPageNum() <= 0) page.setPageNum(1);
-        if (page.getPageNum() > page.getTotal()) page.setPageNum(page.getTotal());
+        if (page.getPageNum() <= 0) {
+            page.setPageNum(1);
+        } else if (page.getPageNum() > page.getTotal()) {
+            page.setPageNum(page.getTotal());
+        }
+
 
         //开始分页
         //去除最后的分号
@@ -169,6 +173,7 @@ public class PagePlugin implements Interceptor {
         if((orderbyIndex = countsql.indexOf("order by")) != -1){
             countsql = countsql.substring(0,  orderbyIndex);
         }
+
         //获得计算总数的sql
         log.debug("[PAGING SQL] paging count sql - " + countsql);
 
