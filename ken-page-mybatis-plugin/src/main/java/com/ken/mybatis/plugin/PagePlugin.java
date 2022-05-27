@@ -123,7 +123,7 @@ public class PagePlugin implements Interceptor {
         //调整page的页码
         if (page.getPageNum() <= 0) {
             page.setPageNum(1);
-        } else if (page.getPageNum() > page.getTotal()) {
+        } else if (page.getTotal() > 0 && page.getPageNum() > page.getTotal()) {
             page.setPageNum(page.getTotal());
         }
 
